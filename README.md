@@ -1,40 +1,43 @@
-# Gesture Controlled Vocal Enhancer
+# Gesture Vocal Enhancer
 
-Control vocal bass enhancement using MediaPipe hand gestures.
+Use MediaPipe hand tracking to control audio effects.
 
-## Features
+## Gesture Controls
 
-- MediaPipe hand tracking
-- Open palm gesture recognition
-- Real-time microphone processing
-- Bass enhancement filter
-- Webcam visualization
+### Open Palm
 
-## Gesture
+Bass boost enabled.
 
-| Gesture | Action |
-|----------|----------|
-| Open Palm | Bass Boost ON |
-| Anything Else | Normal Voice |
+### Hand Removed
 
-## Installation
+Bass boost disabled.
 
-```bash
-pip install -r requirements.txt
-```
+## Local Testing
 
-## Run
-
-```bash
-python main.py
-```
-
-## Controls
-
-Press:
+Open:
 
 ```text
-Q
+index.html
 ```
 
-to quit.
+or use
+
+```bash
+python -m http.server 8080
+```
+
+## GitHub Pages
+
+Push to GitHub.
+
+Enable:
+
+Settings → Pages
+
+Deploy from:
+
+main branch
+
+Then access:
+
+https://YOUR_USERNAME.github.io/YOUR_REPO/

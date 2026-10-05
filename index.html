@@ -1,132 +1,289 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Food Blog it is</title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jetpack Runner</title>
+
 <style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
-.w3-bar-block .w3-bar-item {padding:20px}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #111;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+    }
+
+    canvas {
+        display: block;
+        margin: auto;
+        background: linear-gradient(#1e3c72, #2a5298);
+    }
+
+    #overlay {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+    }
 </style>
 </head>
 <body>
 
-<!-- Sidebar (hidden by default) -->
-<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
-  <a href="javascript:void(0)" onclick="w3_close()"
-  class="w3-bar-item w3-button">Close Menu</a>
-  <a href="#food" onclick="w3_close()" class="w3-bar-item w3-button">Food</a>
-  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">About</a>
-</nav>
-
-<!-- Top menu -->
-<div class="w3-top">
-  <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
-    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
-    <div class="w3-right w3-padding-16">Mail</div>
-    <div class="w3-center w3-padding-16">Food Blog for Everybody</div>
-  </div>
-</div>
-  
-<!-- !PAGE CONTENT! -->
-<div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
-
-  <!-- First Photo Grid-->
-  <div class="w3-row-padding w3-padding-16 w3-center" id="food">
-    <div class="w3-quarter">
-      <img src="https://vaya.in/recipes/wp-content/uploads/2018/06/Club-sandwich.jpg" alt="Sandwich" style="width:100%">
-      <h3>A Real NYC Classic</h3>
-    </div>
-    <div class="w3-quarter">
-      <img src="https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/53BGPNAB6YI63C7LFNHEQGYVAA.jpg" alt="Steak" style="width:100%">
-      <h3>Let Me Tell You About This Steak</h3>
-    </div>
-    <div class="w3-quarter">
-      <img src="https://blog.lexmed.com/images/librariesprovider80/blog-post-featured-images/shutterstock_1933299218.jpg?sfvrsn=4a8d900b_0" alt="Cherries" style="width:100%">
-      <h3>Cherries, interrupted</h3>
-      <p>What else?</p>
-    </div>
-    <div class="w3-quarter">
-      <img src="https://www.acouplecooks.com/wp-content/uploads/2023/01/Red-Sauce-Pasta-008.jpg" alt="Pasta and Wine" style="width:100%">
-      <h3>Once Again, Robust Wine and Vegetable Pasta</h3>
-    </div>
-  </div>
-  
-  <!-- Second Photo Grid-->
-  <div class="w3-row-padding w3-padding-16 w3-center">
-    <div class="w3-quarter">
-      <img src="https://feelgoodfoodie.net/wp-content/uploads/2022/04/How-to-Make-Popsicles-15.jpg" alt="Popsicle" style="width:100%">
-      <h3>All I Need Is a Popsicle</h3>
-    </div>
-    <div class="w3-quarter">
-      <img src="https://www.wholesomeyum.com/wp-content/uploads/2021/07/wholesomeyum-Pan-Seared-Salmon-12.jpg" alt="Salmon" style="width:100%">
-      <h3>Salmon For Your Skin</h3>
-    </div>
-    <div class="w3-quarter">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Desserts.jpg/640px-Desserts.jpg" alt="Sandwich" style="width:100%">
-      <h3>The Perfect Dessert</h3>
-    </div>
-    <div class="w3-quarter">
-      <img src="https://www.simplejoy.com/wp-content/uploads/2021/04/Croissant-French-Toast-5.jpg" alt="Croissant" style="width:100%">
-      <h3>Le French</h3>
-    </div>
-  </div>
-
-  <!-- Pagination -->
-  <div class="w3-center w3-padding-32">
-    <div class="w3-bar">
-      <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
-      <a href="#" class="w3-bar-item w3-black w3-button">1</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
-    </div>
-  </div>
-  
-  <hr id="about">
-
-  <!-- About Section -->
-  <div class="w3-container w3-padding-32 w3-center">  
-    <h3>About Me, The Food Man</h3><br>
-    <img src="https://www.cordonbleu.edu/Files/MediaFile/58300.jpg" alt="Me" class="w3-image" style="display:block;margin:auto" width="800" height="533">
-    <div class="w3-padding-32">
-      <h4><b>I am Who I Am!</b></h4>
-      <h6><i>With Passion For Real, Good Food</i></h6>
-      <p>Just me, myself and I, exploring the universe of unknownment. I have a heart of love and an interest on food blog. I want to share my world with you.</p>
-    </div>
-  </div>
-  <hr>
-  
-  <!-- Footer -->
-  <footer class="w3-row-padding w3-padding-32">
-
-    <div class="w3-third w3-serif">
-      <h3>POPULAR TAGS</h3>
-      <p>
-        <span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dinner</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Salmon</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">France</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Drinks</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Flavors</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Cuisine</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Chicken</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dressing</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fried</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fish</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Duck</span>
-      </p>
-    </div>
-  </footer>
-
-<!-- End page content -->
-</div>
+<div id="overlay">Score: 0</div>
+<canvas id="gameCanvas"></canvas>
 
 <script>
-// Script to open and close sidebar
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const scoreElement = document.getElementById("overlay");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let score = 0;
+let gameOver = false;
+
+const player = {
+    x: 120,
+    y: canvas.height / 2,
+    width: 40,
+    height: 40,
+    velocity: 0
+};
+
+const gravity = 0.5;
+const thrust = -1.2;
+
+let flying = false;
+let obstacles = [];
+
+class Obstacle {
+    constructor() {
+        this.gap = 220;
+
+        const gapY =
+            Math.random() * (canvas.height - this.gap - 200) + 100;
+
+        this.x = canvas.width;
+        this.width = 80;
+
+        this.topHeight = gapY;
+        this.bottomY = gapY + this.gap;
+        this.bottomHeight = canvas.height - this.bottomY;
+
+        this.speed = 6;
+        this.scored = false;
+    }
+
+    update() {
+        this.x -= this.speed;
+    }
+
+    draw() {
+        ctx.fillStyle = "#1abc9c";
+
+        ctx.fillRect(
+            this.x,
+            0,
+            this.width,
+            this.topHeight
+        );
+
+        ctx.fillRect(
+            this.x,
+            this.bottomY,
+            this.width,
+            this.bottomHeight
+        );
+    }
 }
- 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
+
+function spawnObstacle() {
+    obstacles.push(new Obstacle());
 }
+
+setInterval(() => {
+    if (!gameOver) spawnObstacle();
+}, 1800);
+
+function drawPlayer() {
+    ctx.fillStyle = "#ffd166";
+
+    ctx.fillRect(
+        player.x,
+        player.y,
+        player.width,
+        player.height
+    );
+
+    // Jet flame
+    if (flying) {
+        ctx.fillStyle = "orange";
+
+        ctx.beginPath();
+        ctx.moveTo(player.x, player.y + 10);
+        ctx.lineTo(player.x - 20, player.y + 20);
+        ctx.lineTo(player.x, player.y + 30);
+        ctx.fill();
+    }
+}
+
+function updatePlayer() {
+    if (flying) {
+        player.velocity += thrust;
+    }
+
+    player.velocity += gravity;
+    player.y += player.velocity;
+
+    if (player.y < 0) {
+        player.y = 0;
+        player.velocity = 0;
+    }
+
+    if (
+        player.y + player.height >= canvas.height
+    ) {
+        endGame();
+    }
+}
+
+function checkCollision(obs) {
+    const hitTop =
+        player.x < obs.x + obs.width &&
+        player.x + player.width > obs.x &&
+        player.y < obs.topHeight;
+
+    const hitBottom =
+        player.x < obs.x + obs.width &&
+        player.x + player.width > obs.x &&
+        player.y + player.height > obs.bottomY;
+
+    return hitTop || hitBottom;
+}
+
+function drawBackground() {
+    for (let i = 0; i < 50; i++) {
+        ctx.fillStyle = "rgba(255,255,255,0.6)";
+        ctx.fillRect(
+            (i * 200 - (score * 2) % 200),
+            (i * 37) % canvas.height,
+            3,
+            3
+        );
+    }
+}
+
+function endGame() {
+    gameOver = true;
+}
+
+function restartGame() {
+    score = 0;
+    gameOver = false;
+
+    player.y = canvas.height / 2;
+    player.velocity = 0;
+
+    obstacles = [];
+}
+
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawBackground();
+
+    if (!gameOver) {
+        updatePlayer();
+
+        obstacles.forEach((obs, index) => {
+            obs.update();
+            obs.draw();
+
+            if (checkCollision(obs)) {
+                endGame();
+            }
+
+            if (
+                !obs.scored &&
+                obs.x + obs.width < player.x
+            ) {
+                obs.scored = true;
+                score++;
+            }
+
+            if (obs.x + obs.width < 0) {
+                obstacles.splice(index, 1);
+            }
+        });
+
+        drawPlayer();
+
+        scoreElement.textContent = `Score: ${score}`;
+    } else {
+        drawPlayer();
+
+        ctx.fillStyle = "white";
+        ctx.font = "60px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(
+            "GAME OVER",
+            canvas.width / 2,
+            canvas.height / 2
+        );
+
+        ctx.font = "28px Arial";
+        ctx.fillText(
+            "Press R to Restart",
+            canvas.width / 2,
+            canvas.height / 2 + 60
+        );
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") {
+        flying = true;
+    }
+
+    if (e.key.toLowerCase() === "r" && gameOver) {
+        restartGame();
+    }
+});
+
+window.addEventListener("keyup", (e) => {
+    if (e.code === "Space") {
+        flying = false;
+    }
+});
+
+window.addEventListener("mousedown", () => {
+    flying = true;
+});
+
+window.addEventListener("mouseup", () => {
+    flying = false;
+});
+
+window.addEventListener("touchstart", () => {
+    flying = true;
+});
+
+window.addEventListener("touchend", () => {
+    flying = false;
+});
+
+gameLoop();
 </script>
 
 </body>

@@ -6,78 +6,90 @@
 <title>Jetpack Runner</title>
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    body {
-        background: #111;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-    }
+body {
+    overflow: hidden;
+    background: #111;
+    font-family: Arial, sans-serif;
+}
 
-    canvas {
-        display: block;
-        margin: auto;
-        background: linear-gradient(#1e3c72, #2a5298);
-    }
+canvas {
+    display: block;
+    background: linear-gradient(to bottom, #1e3c72, #2a5298);
+}
 
-    #overlay {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-    }
+#overlay {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 100;
+}
 </style>
 </head>
+
 <body>
 
-<div id="overlay">Score: 0</div>
+<div id="overlay">Score: 0 | Coins: 0</div>
 <canvas id="gameCanvas"></canvas>
 
 <script>
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const scoreElement = document.getElementById("overlay");
+const overlay = document.getElementById("overlay");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let score = 0;
-let gameOver = false;
+const groundHeight = 120;
 
-const player = {
-    x: 120,
-    y: canvas.height / 2,
-    width: 40,
-    height: 40,
-    velocity: 0
-};
+let score = 0;
+let coinsCollected = 0;
+let gameOver = false;
+let flying = false;
 
 const gravity = 0.5;
 const thrust = -1.2;
 
-let flying = false;
+const player = {
+    x: 120,
+    y: canvas.height - groundHeight - 50,
+    width: 40,
+    height: 50,
+    velocity: 0
+};
+
 let obstacles = [];
+let coins = [];
 
 class Obstacle {
     constructor() {
         this.gap = 220;
 
         const gapY =
-            Math.random() * (canvas.height - this.gap - 200) + 100;
+            Math.random() *
+            (canvas.height - groundHeight - this.gap - 100)
+            + 50;
 
         this.x = canvas.width;
         this.width = 80;
 
         this.topHeight = gapY;
+
         this.bottomY = gapY + this.gap;
-        this.bottomHeight = canvas.height - this.bottomY;
+
+        this.bottomHeight =
+            canvas.height -
+            groundHeight -
+            this.bottomY;
 
         this.speed = 6;
         this.scored = false;
@@ -106,15 +118,67 @@ class Obstacle {
     }
 }
 
-function spawnObstacle() {
-    obstacles.push(new Obstacle());
+class Coin {
+    constructor() {
+        this.x = canvas.width;
+
+        this.y =
+            Math.random() *
+            (canvas.height - groundHeight - 250)
+            + 50;
+
+        this.radius = 12;
+        this.speed = 6;
+        this.collected = false;
+    }
+
+    update() {
+        this.x -= this.speed;
+    }
+
+    draw() {
+        ctx.fillStyle = "gold";
+
+        ctx.beginPath();
+        ctx.arc(
+            this.x,
+            this.y,
+            this.radius,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+
+        ctx.strokeStyle = "#ffcc00";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
 }
 
-setInterval(() => {
-    if (!gameOver) spawnObstacle();
-}, 1800);
+function drawGround() {
+    ctx.fillStyle = "#444";
+
+    ctx.fillRect(
+        0,
+        canvas.height - groundHeight,
+        canvas.width,
+        groundHeight
+    );
+
+    ctx.fillStyle = "#666";
+
+    for (let i = 0; i < canvas.width; i += 50) {
+        ctx.fillRect(
+            i,
+            canvas.height - groundHeight,
+            25,
+            5
+        );
+    }
+}
 
 function drawPlayer() {
+
     ctx.fillStyle = "#ffd166";
 
     ctx.fillRect(
@@ -124,167 +188,43 @@ function drawPlayer() {
         player.height
     );
 
-    // Jet flame
+    ctx.fillStyle = "#333";
+
+    ctx.fillRect(
+        player.x + 25,
+        player.y + 10,
+        8,
+        8
+    );
+
     if (flying) {
+
         ctx.fillStyle = "orange";
 
         ctx.beginPath();
-        ctx.moveTo(player.x, player.y + 10);
-        ctx.lineTo(player.x - 20, player.y + 20);
-        ctx.lineTo(player.x, player.y + 30);
+        ctx.moveTo(
+            player.x,
+            player.y + 15
+        );
+
+        ctx.lineTo(
+            player.x - 25,
+            player.y + 25
+        );
+
+        ctx.lineTo(
+            player.x,
+            player.y + 35
+        );
+
         ctx.fill();
     }
 }
 
 function updatePlayer() {
+
     if (flying) {
         player.velocity += thrust;
     }
 
-    player.velocity += gravity;
-    player.y += player.velocity;
-
-    if (player.y < 0) {
-        player.y = 0;
-        player.velocity = 0;
-    }
-
-    if (
-        player.y + player.height >= canvas.height
-    ) {
-        endGame();
-    }
-}
-
-function checkCollision(obs) {
-    const hitTop =
-        player.x < obs.x + obs.width &&
-        player.x + player.width > obs.x &&
-        player.y < obs.topHeight;
-
-    const hitBottom =
-        player.x < obs.x + obs.width &&
-        player.x + player.width > obs.x &&
-        player.y + player.height > obs.bottomY;
-
-    return hitTop || hitBottom;
-}
-
-function drawBackground() {
-    for (let i = 0; i < 50; i++) {
-        ctx.fillStyle = "rgba(255,255,255,0.6)";
-        ctx.fillRect(
-            (i * 200 - (score * 2) % 200),
-            (i * 37) % canvas.height,
-            3,
-            3
-        );
-    }
-}
-
-function endGame() {
-    gameOver = true;
-}
-
-function restartGame() {
-    score = 0;
-    gameOver = false;
-
-    player.y = canvas.height / 2;
-    player.velocity = 0;
-
-    obstacles = [];
-}
-
-function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    drawBackground();
-
-    if (!gameOver) {
-        updatePlayer();
-
-        obstacles.forEach((obs, index) => {
-            obs.update();
-            obs.draw();
-
-            if (checkCollision(obs)) {
-                endGame();
-            }
-
-            if (
-                !obs.scored &&
-                obs.x + obs.width < player.x
-            ) {
-                obs.scored = true;
-                score++;
-            }
-
-            if (obs.x + obs.width < 0) {
-                obstacles.splice(index, 1);
-            }
-        });
-
-        drawPlayer();
-
-        scoreElement.textContent = `Score: ${score}`;
-    } else {
-        drawPlayer();
-
-        ctx.fillStyle = "white";
-        ctx.font = "60px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(
-            "GAME OVER",
-            canvas.width / 2,
-            canvas.height / 2
-        );
-
-        ctx.font = "28px Arial";
-        ctx.fillText(
-            "Press R to Restart",
-            canvas.width / 2,
-            canvas.height / 2 + 60
-        );
-    }
-
-    requestAnimationFrame(gameLoop);
-}
-
-window.addEventListener("keydown", (e) => {
-    if (e.code === "Space") {
-        flying = true;
-    }
-
-    if (e.key.toLowerCase() === "r" && gameOver) {
-        restartGame();
-    }
-});
-
-window.addEventListener("keyup", (e) => {
-    if (e.code === "Space") {
-        flying = false;
-    }
-});
-
-window.addEventListener("mousedown", () => {
-    flying = true;
-});
-
-window.addEventListener("mouseup", () => {
-    flying = false;
-});
-
-window.addEventListener("touchstart", () => {
-    flying = true;
-});
-
-window.addEventListener("touchend", () => {
-    flying = false;
-});
-
-gameLoop();
-</script>
-
-</body>
-</html>
+    player
